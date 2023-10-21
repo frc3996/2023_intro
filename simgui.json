@@ -1,0 +1,51 @@
+{
+  "HALProvider": {
+    "Other Devices": {
+      "window": {
+        "visible": false
+      }
+    }
+  },
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Ungrouped/DifferentialDrive[1]": "DifferentialDrive",
+      "/LiveWindow/Ungrouped/PWMSparkMax[10]": "Motor Controller",
+      "/LiveWindow/Ungrouped/PWMSparkMax[11]": "Motor Controller",
+      "/LiveWindow/Ungrouped/PWMSparkMax[12]": "Motor Controller",
+      "/LiveWindow/Ungrouped/PWMSparkMax[13]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Talon[1]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Talon[2]": "Motor Controller",
+      "/SmartDashboard/Autonomous Mode": "String Chooser",
+      "/SmartDashboard/Field": "Field2d"
+    },
+    "windows": {
+      "/FMSInfo": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Field": {
+        "window": {
+          "visible": true
+        }
+      }
+    }
+  },
+  "NetworkTables": {
+    "Retained Values": {
+      "open": false
+    },
+    "transitory": {
+      "autonomous": {
+        "Two Steps": {
+          "open": true,
+          "state": {
+            "open": true
+          }
+        },
+        "open": true
+      }
+    }
+  }
+}
