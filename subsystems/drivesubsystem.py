@@ -1,7 +1,8 @@
 import commands2
-import constants
 import wpilib
 import wpilib.drive
+
+import constants
 
 
 class DriveSubsystem(commands2.SubsystemBase):
@@ -70,3 +71,7 @@ class DriveSubsystem(commands2.SubsystemBase):
 
     def stopMotor(self):
         self.drive.stopMotor()
+
+    def flush(self):
+        pass
+        # self.drive.flush()

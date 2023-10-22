@@ -1,11 +1,12 @@
-from components.component2 import Component2
 from magicbot import AutonomousStateMachine, timed_state, tunable
+
+from components.component2 import Component2
 from subsystems.drivesubsystem import DriveSubsystem
 
 
 class TwoSteps(AutonomousStateMachine):
     MODE_NAME = "Two Steps"
-    DEFAULT = True
+    DEFAULT = False
 
     component2: Component2
 

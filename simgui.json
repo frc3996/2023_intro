@@ -25,6 +25,11 @@
           "visible": true
         }
       },
+      "/SmartDashboard/Autonomous Mode": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Field": {
         "window": {
           "visible": true
@@ -33,19 +38,32 @@
     }
   },
   "NetworkTables": {
-    "Retained Values": {
-      "open": false
-    },
     "transitory": {
       "autonomous": {
-        "Two Steps": {
+        "AvanceEtRecule": {
           "open": true,
           "state": {
             "open": true
           }
         },
-        "open": true
+        "Two Steps": {
+          "open": true,
+          "state": {
+            "open": true
+          }
+        }
       }
+    }
+  },
+  "NetworkTables Info": {
+    "Clients": {
+      "open": true
+    },
+    "Connections": {
+      "open": true
+    },
+    "Server": {
+      "open": true
     }
   }
 }
