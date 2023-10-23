@@ -1,6 +1,6 @@
 from magicbot import AutonomousStateMachine, timed_state, tunable
 
-from components.component2 import Component2
+from components.dummy import Dummy
 from subsystems.drivesubsystem import DriveSubsystem
 
 
@@ -8,7 +8,7 @@ class TwoSteps(AutonomousStateMachine):
     MODE_NAME = "Two Steps"
     DEFAULT = False
 
-    component2: Component2
+    dummy: Dummy
 
     # Injected from the definition in robot.py
     drive: DriveSubsystem
@@ -23,7 +23,7 @@ class TwoSteps(AutonomousStateMachine):
     @timed_state(duration=5)
     def do_something(self):
         """This happens second"""
-        self.component2.do_something()
+        self.dummy.do_something()
 
     #    on_enable - Called when autonomous mode is initially enabled
     #

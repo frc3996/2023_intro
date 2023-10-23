@@ -8,4 +8,8 @@ default:
 %: 
 	python3 robot.py $@
 
-.PHONY: default
+clean:
+	find . -iname '*.pyc' -delete
+	find . -iname '__pycache__' -delete
+
+.PHONY: default clean

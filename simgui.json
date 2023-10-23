@@ -10,12 +10,23 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/Ungrouped/DifferentialDrive[1]": "DifferentialDrive",
+      "/LiveWindow/Ungrouped/DigitalInput[0]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[1]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[2]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[3]": "Digital Input",
       "/LiveWindow/Ungrouped/PWMSparkMax[10]": "Motor Controller",
       "/LiveWindow/Ungrouped/PWMSparkMax[11]": "Motor Controller",
       "/LiveWindow/Ungrouped/PWMSparkMax[12]": "Motor Controller",
       "/LiveWindow/Ungrouped/PWMSparkMax[13]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/Spark[0]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Spark[1]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Spark[2]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Spark[3]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon[1]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon[2]": "Motor Controller",
+      "/LiveWindow/Ungrouped/frc2::SubsystemBase": "Subsystem",
+      "/LiveWindow/Ungrouped/navX-Sensor[4]": "Gyro",
       "/SmartDashboard/Autonomous Mode": "String Chooser",
       "/SmartDashboard/Field": "Field2d"
     },
@@ -31,7 +42,12 @@
         }
       },
       "/SmartDashboard/Field": {
+        "Robot": {
+          "style": "Box/Image"
+        },
+        "image": "/home/user/personal/play_with_robotpy/2022-field.png",
         "window": {
+          "name": "Field",
           "visible": true
         }
       }
@@ -51,7 +67,11 @@
           "state": {
             "open": true
           }
-        }
+        },
+        "open": true
+      },
+      "robot": {
+        "open": true
       }
     }
   },
@@ -63,6 +83,9 @@
       "open": true
     },
     "Server": {
+      "Publishers": {
+        "open": true
+      },
       "open": true
     }
   }

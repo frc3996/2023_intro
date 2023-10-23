@@ -1,13 +1,10 @@
-import wpilib
+import logging
+
 from magicbot import will_reset_to
 
-from .component1 import Component1
 
-
-class Component2:
-    component1: Component1
-    some_motor: wpilib.Talon
-
+class Dummy:
+    logger: logging.Logger
     # This is changed to the value in robot.py
     SOME_CONSTANT: int
 
@@ -24,7 +21,4 @@ class Component2:
         self.did_something = True
 
     def execute(self):
-        if self.did_something:
-            self.some_motor.set(1)
-        else:
-            self.some_motor.set(0)
+        pass
