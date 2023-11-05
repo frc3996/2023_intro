@@ -28,7 +28,8 @@
       "/LiveWindow/Ungrouped/frc2::SubsystemBase": "Subsystem",
       "/LiveWindow/Ungrouped/navX-Sensor[4]": "Gyro",
       "/SmartDashboard/Autonomous Mode": "String Chooser",
-      "/SmartDashboard/Field": "Field2d"
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/Model": "Mechanism2d"
     },
     "windows": {
       "/FMSInfo": {
@@ -45,9 +46,14 @@
         "Robot": {
           "style": "Box/Image"
         },
-        "image": "/home/user/personal/play_with_robotpy/2022-field.png",
+        "image": "2022-field.png",
         "window": {
           "name": "Field",
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Model": {
+        "window": {
           "visible": true
         }
       }

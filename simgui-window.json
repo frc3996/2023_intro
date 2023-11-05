@@ -12,7 +12,9 @@
       "DockNode      ID=0x00000009 Parent=0x00000004 SizeRef=132,258 Selected=0x050F715F",
       "DockNode        ID=0x00000005 Parent=0x0000000A SizeRef=1035,632 Split=X",
       "DockNode      ID=0x00000002 Parent=0x00000005 SizeRef=1108,632 Selected=0xB5CBE9F0",
-      "DockNode      ID=0x00000003 Parent=0x00000005 SizeRef=258,632 Selected=0x2D9B9756",
+      "DockNode      ID=0x00000003 Parent=0x00000005 SizeRef=258,632 Split=Y Selected=0x2D9B9756",
+      "DockNode    ID=0x00000010 Parent=0x00000003 SizeRef=308,358 Selected=0x40F96F17",
+      "DockNode    ID=0x00000011 Parent=0x00000003 SizeRef=308,520 Selected=0x2D9B9756",
       "DockNode          ID=0x0000000B Parent=0x00000001 SizeRef=1215,230 Split=X Selected=0x138219D4",
       "DockNode        ID=0x0000000C Parent=0x0000000B SizeRef=191,155 Selected=0x6AE6D891",
       "DockNode        ID=0x0000000D Parent=0x0000000B SizeRef=1022,155 Selected=0x138219D4"
@@ -21,13 +23,13 @@
   "MainWindow": {
     "GLOBAL": {
       "fps": "120",
-      "height": "1200",
+      "height": "384",
       "maximized": "0",
       "style": "0",
       "userScale": "2",
-      "width": "1920",
-      "xpos": "0",
-      "ypos": "0"
+      "width": "1912",
+      "xpos": "4",
+      "ypos": "812"
     }
   },
   "Table": {
@@ -62,6 +64,12 @@
       "Pos": "284,26",
       "Size": "1321,880"
     },
+    "###/SmartDashboard/Model": {
+      "Collapsed": "0",
+      "DockId": "0x00000010,0",
+      "Pos": "1607,26",
+      "Size": "308,358"
+    },
     "###FMS": {
       "Collapsed": "0",
       "Pos": "0,582",
@@ -80,9 +88,9 @@
     },
     "###NetworkTables": {
       "Collapsed": "0",
-      "DockId": "0x00000003,0",
-      "Pos": "1607,26",
-      "Size": "308,880"
+      "DockId": "0x00000011,0",
+      "Pos": "1607,386",
+      "Size": "308,520"
     },
     "###NetworkTables Info": {
       "Collapsed": "0",

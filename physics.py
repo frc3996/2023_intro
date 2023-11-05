@@ -145,6 +145,8 @@ class PhysicsEngine:
         self.ball_device = hal.SimDevice("Balls")
         self.ball_insert = self.ball_device.createBoolean("insert", False, False)
 
+        self.draw_robot()
+
     def draw_robot(self):
         # drawn robot model (scale 1inch=1)
 
@@ -174,7 +176,7 @@ class PhysicsEngine:
         self.belt_motor_pt.setColor(GRAY)
 
         self.shooter = self.model.make_hex("shooter", 27, 20, 3, 2)
-        self.shooter.setColor(BLUE)
+        self.shooter.setColor(GRAY)
 
         # The 'value' of each ball is either 'nan' (not present) or it
         # is the distance the ball lies along the track in inches
@@ -190,11 +192,11 @@ class PhysicsEngine:
         # climber
         climber = self.model.getRoot("climber", CLIMBER_X, 20)
         self.climb_extender = climber.appendLigament(
-            "ext", CLIMBER_LOWERED_LEN, 90, color=BLUE
+            "ext", CLIMBER_LOWERED_LEN, 90, color=GRAY
         )
-        l1 = self.climb_extender.appendLigament("l1", 1, 60, color=BLUE)
-        l2 = l1.appendLigament("l2", 1, 60, color=BLUE)
-        l2.appendLigament("l3", 1, 60, color=BLUE)
+        l1 = self.climb_extender.appendLigament("l1", 1, 60, color=GRAY)
+        l2 = l1.appendLigament("l2", 1, 60, color=GRAY)
+        l2.appendLigament("l3", 1, 60, color=GRAY)
 
     def update_sim(self, now: float, tm_diff: float) -> None:
         """
