@@ -8,6 +8,10 @@ import wpilib.drive
 import constants
 from misc.sparksim import CANSparkMax
 
+# This feature should allow a motor to follow the voltage of another, it doesn't
+# work in simulation, is it better than a MotorControllerGroup?
+EXPERIMENTAL_USE_FOLLOW = 0
+
 
 class DriveSubsystem(commands2.SubsystemBase):
     def __init__(self) -> None:
@@ -57,9 +61,14 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.left_motor_2 = CANSparkMax(
             constants.kLeftMotor2Port, CANSparkMax.MotorType.kBrushless
         )
-        self.left_motor_2.setInverted(constants.kLeftMotor2Inverted)
 
-        self.left = wpilib.MotorControllerGroup(self.left_motor_1, self.left_motor_2)
+        if EXPERIMENTAL_USE_FOLLOW:
+            self.left_motor_2.follow(self.left_motor_1, constants.kLeftMotor2Inverted)
+        else:
+            self.left_motor_2.setInverted(constants.kLeftMotor2Inverted)
+            left_group = wpilib.MotorControllerGroup(
+                self.left_motor_1, self.left_motor_2
+            )
 
         # Right side
         self.right_motor_1 = CANSparkMax(
@@ -70,23 +79,39 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.right_motor_2 = CANSparkMax(
             constants.kRightMotor2Port, CANSparkMax.MotorType.kBrushless
         )
-        self.right_motor_1.setInverted(constants.kRightMotor2Inverted)
-
-        self.right = wpilib.MotorControllerGroup(self.right_motor_1, self.right_motor_2)
+        if EXPERIMENTAL_USE_FOLLOW:
+            self.right_motor_2.follow(
+                self.right_motor_1, constants.kRightMotor2Inverted
+            )
+        else:
+            self.right_motor_2.setInverted(constants.kRightMotor2Inverted)
+            right_group = wpilib.MotorControllerGroup(
+                self.right_motor_1, self.right_motor_2
+            )
 
         # This is a differential drive
-        self.drive = wpilib.drive.DifferentialDrive(self.left, self.right)
+        if EXPERIMENTAL_USE_FOLLOW:
+            self.drive = wpilib.drive.DifferentialDrive(
+                self.left_motor_1, self.right_motor_1
+            )
+        else:
+            self.drive = wpilib.drive.DifferentialDrive(left_group, right_group)
 
         # Easier in a list
-        self.motors: list[CANSparkMax] = []
-        self.motors.append(self.left_motor_1)
-        self.motors.append(self.left_motor_2)
-        self.motors.append(self.right_motor_1)
-        self.motors.append(self.right_motor_2)
+        self.motors: list[CANSparkMax] = [
+            self.left_motor_1,
+            self.left_motor_2,
+            self.right_motor_1,
+            self.right_motor_2,
+        ]
 
         for motor in self.motors:
             # Reset the parameters
             motor.restoreFactoryDefaults()
+            # Brake or Coast?
+            # motor.setIdleMode(rev.CANSparkMax.IdleMode.kBrake)
+            # motor.setIdleMode(rev.CANSparkMax.IdleMode.kCoast)
+
             pid_controller = motor.getPIDController()
             # encoder = motor.getEncoder()
 

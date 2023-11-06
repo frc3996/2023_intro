@@ -39,6 +39,24 @@ max_acc = 1500
 min_vel = 0
 allowed_err = 0
 
+# The max velocity and acceleration for our autonomous when using ramsete
+kMaxSpeedMetersPerSecond = 1
+kMaxAccelerationMetersPerSecondSquared = 0.75
+kMaxVoltage = 10
+
+kMaxCentripetalAcceleration = 1
+
+kMaxVoltage = 10
+
+# sysid filtered results from 2022 (git 172d5c42, window size=10)
+kS_linear = 1.0898
+kV_linear = 3.1382
+kA_linear = 1.7421
+
+kS_angular = 2.424
+kV_angular = 3.3557
+kA_angular = 1.461
+
 # Encoders
 # kLeftEncoderPorts = (0, 1)
 # kRightEncoderPorts = (2, 3)

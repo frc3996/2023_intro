@@ -1,7 +1,7 @@
 from magicbot import AutonomousStateMachine, timed_state, tunable
 from robotpy_ext.autonomous import StatefulAutonomous, state, timed_state
 
-from subsystems.drivesubsystem import DriveSubsystem
+from subsystems.drivetrain import DriveSubsystem
 
 
 class DriveForward(StatefulAutonomous):

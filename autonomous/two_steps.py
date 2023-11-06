@@ -1,7 +1,7 @@
 from magicbot import AutonomousStateMachine, timed_state, tunable
 
 from components.dummy import Dummy
-from subsystems.drivesubsystem import DriveSubsystem
+from subsystems.drivetrain import DriveSubsystem
 
 
 class TwoSteps(AutonomousStateMachine):

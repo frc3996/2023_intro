@@ -2,7 +2,7 @@ import ntcore
 from magicbot import AutonomousStateMachine, timed_state, tunable
 from magicbot.state_machine import AutonomousStateMachine, state, timed_state
 
-from subsystems.drivesubsystem import DriveSubsystem
+from subsystems.drivetrain import DriveSubsystem
 
 
 class AvanceEtRecule(AutonomousStateMachine):

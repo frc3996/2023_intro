@@ -2,7 +2,6 @@ import typing
 from dataclasses import dataclass
 from typing import cast
 
-import hal
 import wpilib
 import wpilib.simulation
 from pyfrc.physics.core import PhysicsInterface
@@ -11,6 +10,7 @@ from wpimath.system import LinearSystemId
 from wpimath.system.plant import DCMotor
 
 import constants
+from misc.sparksim import CANSparkMax
 
 if typing.TYPE_CHECKING:
     from robot import MyRobot
@@ -109,11 +109,18 @@ class PhysicsEngine:
     def __init__(self, physics_controller: PhysicsInterface, robot: "MyRobot"):
         self.physics_controller: PhysicsInterface = physics_controller
 
-        # Setup drive
-        self.left_motor = wpilib.simulation.PWMSim(1)
-        self.right_motor = wpilib.simulation.PWMSim(3)
+        # Setup drive, as long as the ports are matching..
+        self.left_motor: CANSparkMax = robot.drive.left_motor_1
+        self.left_motor_sim = wpilib.simulation.PWMSim(self.left_motor)
+        self.right_motor: CANSparkMax = robot.drive.right_motor_1
+        self.right_motor_sim = wpilib.simulation.PWMSim(self.right_motor)
 
-        self.system = LinearSystemId.identifyDrivetrainSystem(1.98, 0.2, 1.5, 0.3)
+        self.system = LinearSystemId.identifyDrivetrainSystem(
+            constants.kV_linear,
+            constants.kA_linear,
+            constants.kV_angular,
+            constants.kA_angular,
+        )
         self.drive = wpilib.simulation.DifferentialDrivetrainSim(
             self.system,
             constants.kTrackWidth,
@@ -122,28 +129,33 @@ class PhysicsEngine:
             constants.kWheelRadius,
         )
 
-        initialPose = Pose2d.fromFeet(23, 8, Rotation2d.fromDegrees(-160))
-        self.drive.setPose(initialPose)
-
         # NavX
         self.navx = wpilib.simulation.SimDeviceSim("navX-Sensor[4]")
         self.navx_yaw = self.navx.getDouble("Yaw")
 
         # Configure encoders
-        # self.leftEncoderSim = wpilib.simulation.EncoderSim(robot.drive.leftEncoder)
-        # self.rightEncoderSim = wpilib.simulation.EncoderSim(robot.drive.rightEncoder)
+        self.leftEncoderSim = (
+            self.left_motor.getEncoder()
+        )  # wpilib.simulation.EncoderSim(robot.encoder_l)
+        self.rightEncoderSim = (
+            self.right_motor.getEncoder()
+        )  # wpilib.simulation.EncoderSim(robot.encoder_r)
 
-        self.intake_tuner = hal.SimDevice("Intake Tuner")
-        self.entry_sensor_pos = self.intake_tuner.createDouble(
-            "entry sensor pos", False, ENTRY_SENSOR_POS
-        )
-        self.exit_sensor_pos = self.intake_tuner.createDouble(
-            "exit sensor pos", False, EXIT_SENSOR_POS
-        )
+        initialPose = Pose2d(7, 2.5, Rotation2d.fromDegrees(-160))
+        self.drive.setPose(initialPose)
+        self.navx_yaw.set(-cast(float, self.drive.getPose().rotation().degrees()))
 
-        # Ball control
-        self.ball_device = hal.SimDevice("Balls")
-        self.ball_insert = self.ball_device.createBoolean("insert", False, False)
+        # self.intake_tuner = hal.SimDevice("Intake Tuner")
+        # self.entry_sensor_pos = self.intake_tuner.createDouble(
+        #     "entry sensor pos", False, ENTRY_SENSOR_POS
+        # )
+        # self.exit_sensor_pos = self.intake_tuner.createDouble(
+        #     "exit sensor pos", False, EXIT_SENSOR_POS
+        # )
+        #
+        # # Ball control
+        # self.ball_device = hal.SimDevice("Balls")
+        # self.ball_insert = self.ball_device.createBoolean("insert", False, False)
 
         self.draw_robot()
 
@@ -159,44 +171,44 @@ class PhysicsEngine:
         inside = self.model.getRoot("inside", EDGE, 20)
         inside.appendLigament("l1", INDEXER_LEN, 0, color=GRAY)
 
-        self.entry_sensor_pt = self.model.make_point(
-            "entry-sensor", self.entry_sensor_pos.get(), SENSOR_Y
-        )
-
-        self.exit_sensor_pt = self.model.make_point(
-            "exit-sensor",
-            self.exit_sensor_pos.get(),
-            SENSOR_Y,
-        )
-
-        self.entry_motor_pt = self.model.make_hex("intake-motor", 4, 20, 2.5, 4)
-        self.entry_motor_pt.setColor(GRAY)
-
-        self.belt_motor_pt = self.model.make_hex("belt-motor", 10, 4, 2.5, 4)
-        self.belt_motor_pt.setColor(GRAY)
-
-        self.shooter = self.model.make_hex("shooter", 27, 20, 3, 2)
-        self.shooter.setColor(GRAY)
+        # self.entry_sensor_pt = self.model.make_point(
+        #     "entry-sensor", self.entry_sensor_pos.get(), SENSOR_Y
+        # )
+        #
+        # self.exit_sensor_pt = self.model.make_point(
+        #     "exit-sensor",
+        #     self.exit_sensor_pos.get(),
+        #     SENSOR_Y,
+        # )
+        #
+        # self.entry_motor_pt = self.model.make_hex("intake-motor", 4, 20, 2.5, 4)
+        # self.entry_motor_pt.setColor(GRAY)
+        #
+        # self.belt_motor_pt = self.model.make_hex("belt-motor", 10, 4, 2.5, 4)
+        # self.belt_motor_pt.setColor(GRAY)
+        #
+        # self.shooter = self.model.make_hex("shooter", 27, 20, 3, 2)
+        # self.shooter.setColor(GRAY)
 
         # The 'value' of each ball is either 'nan' (not present) or it
         # is the distance the ball lies along the track in inches
-        self.balls = []
-
-        for i in range(2):
-            v = self.ball_device.createDouble(f"center {i}", False, float("nan"))
-            m = self.model.make_hex(f"ball {i}", -400, BALL_Y, 5, 1)
-            m.setColor(RED)
-
-            self.balls.append((v, m))
-
-        # climber
-        climber = self.model.getRoot("climber", CLIMBER_X, 20)
-        self.climb_extender = climber.appendLigament(
-            "ext", CLIMBER_LOWERED_LEN, 90, color=GRAY
-        )
-        l1 = self.climb_extender.appendLigament("l1", 1, 60, color=GRAY)
-        l2 = l1.appendLigament("l2", 1, 60, color=GRAY)
-        l2.appendLigament("l3", 1, 60, color=GRAY)
+        # self.balls = []
+        #
+        # for i in range(2):
+        #     v = self.ball_device.createDouble(f"center {i}", False, float("nan"))
+        #     m = self.model.make_hex(f"ball {i}", -400, BALL_Y, 5, 1)
+        #     m.setColor(RED)
+        #
+        #     self.balls.append((v, m))
+        #
+        # # climber
+        # climber = self.model.getRoot("climber", CLIMBER_X, 20)
+        # self.climb_extender = climber.appendLigament(
+        #     "ext", CLIMBER_LOWERED_LEN, 90, color=GRAY
+        # )
+        # l1 = self.climb_extender.appendLigament("l1", 1, 60, color=GRAY)
+        # l2 = l1.appendLigament("l2", 1, 60, color=GRAY)
+        # l2.appendLigament("l3", 1, 60, color=GRAY)
 
     def update_sim(self, now: float, tm_diff: float) -> None:
         """
@@ -209,10 +221,24 @@ class PhysicsEngine:
         """
 
         # Simulate the drive
-        left_motor_speed = self.left_motor.getSpeed()
-        right_motor_speed = self.right_motor.getSpeed()
+        left_motor_speed = self.left_motor_sim.getSpeed()
+        right_motor_speed = self.right_motor_sim.getSpeed()
         voltage = wpilib.RobotController.getInputVoltage()
         self.drive.setInputs(left_motor_speed * voltage, right_motor_speed * voltage)
         self.drive.update(tm_diff)
+
+        # Simulate the encoders
+        self.leftEncoderSim.setPosition(self.drive.getLeftPosition())
+        self.leftEncoderSim.setVelocity(self.drive.getLeftVelocity())
+        self.rightEncoderSim.setPosition(self.drive.getRightPosition())
+        self.rightEncoderSim.setVelocity(self.drive.getRightVelocity())
+
+        # Update the gyro simulation
+        # -> FRC gyros are positive clockwise, but the returned pose is positive
+        #    counter-clockwise
+        # self.gyro.setAngle(-pose.rotation().degrees())
+        self.navx_yaw.set(-cast(float, self.drive.getPose().rotation().degrees()))
+
+        # Update the Field2d
         field = cast(wpilib.Field2d, self.physics_controller.field)
         field.setRobotPose(self.drive.getPose())
