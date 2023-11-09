@@ -104,3 +104,4 @@ else:
     import rev
 
     CANSparkMax = rev.CANSparkMax
+    SparkMaxPIDController = rev.SparkMaxPIDController

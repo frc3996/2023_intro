@@ -14,14 +14,14 @@ import wpilib
 # sparkmax right 1, 2
 # sparkmax right 3, 4
 
-kLeftMotor1Port = 0
+kLeftMotor1Port = 1
 kLeftMotor1Inverted = False
-kLeftMotor2Port = 1
+kLeftMotor2Port = 2
 kLeftMotor2Inverted = False
-kRightMotor1Port = 2
-kRightMotor1Inverted = False
-kRightMotor2Port = 3
-kRightMotor2Inverted = False
+kRightMotor1Port = 3
+kRightMotor1Inverted = True
+kRightMotor2Port = 4
+kRightMotor2Inverted = True
 
 # PID
 kP = 5e-5
@@ -34,8 +34,10 @@ kMinOutput = -1
 max_rpm = 5700
 
 # Smart Motion coefficients
-max_vel = 2000  # rpm
-max_acc = 1500
+# max_vel = 2000  # rpm
+# max_acc = 1500
+max_vel = 100  # rpm
+max_acc = 10
 min_vel = 0
 allowed_err = 0
 
