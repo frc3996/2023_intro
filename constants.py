@@ -34,10 +34,10 @@ kMinOutput = -1
 max_rpm = 5700
 
 # Smart Motion coefficients
-# max_vel = 2000  # rpm
-# max_acc = 1500
-max_vel = 100  # rpm
-max_acc = 10
+max_vel = 2000  # rpm
+max_acc = 1500
+# max_vel = 100  # rpm
+# max_acc = 10
 min_vel = 0
 allowed_err = 0
 

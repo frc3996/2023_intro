@@ -1,3 +1,4 @@
+import rev
 import wpilib
 from wpimath.controller import PIDController
 
@@ -46,7 +47,7 @@ if wpilib.RobotBase.isSimulation():
             self._min_output = min_output
             self._max_output = max_output
 
-        def setReference(self, sp: float, type: "CANSparkMax.ControlType"):
+        def setReference(self, sp: float, type: "rev.CANSparkMax.ControlType"):
             v = self._controller.calculate(self._motor._encoder._position, sp)
             if v > self._max_output:
                 v = self._max_output
@@ -71,10 +72,13 @@ if wpilib.RobotBase.isSimulation():
             kBrushless = 1
 
         class ControlType:
-            kDutyCycle = 1
-            kPosition = 2
-            kVelocity = 3
-            kVoltage = 4
+            kCurrent = rev.CANSparkMax.ControlType.kCurrent
+            kDutyCycle = rev.CANSparkMax.ControlType.kDutyCycle
+            kPosition = rev.CANSparkMax.ControlType.kPosition
+            kSmartMotion = rev.CANSparkMax.ControlType.kSmartMotion
+            kSmartVelocity = rev.CANSparkMax.ControlType.kSmartVelocity
+            kVelocity = rev.CANSparkMax.ControlType.kVelocity
+            kVoltage = rev.CANSparkMax.ControlType.kVoltage
 
         class IdleMode:
             kCoast = 0

@@ -82,9 +82,9 @@ class DriveSubsystem(commands2.SubsystemBase):
             self.right_motor_2.follow(
                 self.right_motor_1, constants.kRightMotor2Inverted
             )
-            self.drive = wpilib.drive.DifferentialDrive(
-                self.left_motor_1, self.right_motor_1
-            )
+            # self.drive = wpilib.drive.DifferentialDrive(
+            #     self.left_motor_1, self.right_motor_1
+            # )
         else:
             left_group = wpilib.MotorControllerGroup(
                 self.left_motor_1, self.left_motor_2
@@ -92,7 +92,7 @@ class DriveSubsystem(commands2.SubsystemBase):
             right_group = wpilib.MotorControllerGroup(
                 self.right_motor_1, self.right_motor_2
             )
-            self.drive = wpilib.drive.DifferentialDrive(left_group, right_group)
+            # self.drive = wpilib.drive.DifferentialDrive(left_group, right_group)
 
         # Easier in a list
 
@@ -139,78 +139,6 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.right_motor_1.setInverted(constants.kRightMotor1Inverted)
         self.right_motor_2.setInverted(constants.kRightMotor2Inverted)
 
-    # def teleopPeriodic(self):
-    #     p = cast(float, wpilib.SmartDashboard.getNumber("P Gain", 0))
-    #     i = cast(float, wpilib.SmartDashboard.getNumber("I Gain", 0))
-    #     d = cast(float, wpilib.SmartDashboard.getNumber("D Gain", 0))
-    #     iz = cast(float, wpilib.SmartDashboard.getNumber("I Zone", 0))
-    #     ff = cast(float, wpilib.SmartDashboard.getNumber("Feed Forward", 0))
-    #     max_out = cast(float, wpilib.SmartDashboard.getNumber("Max Output", 0))
-    #     min_out = cast(float, wpilib.SmartDashboard.getNumber("Min Output", 0))
-    #     maxV = cast(float, wpilib.SmartDashboard.getNumber("Max Velocity", 0))
-    #     minV = cast(float, wpilib.SmartDashboard.getNumber("Min Velocity", 0))
-    #     maxA = cast(float, wpilib.SmartDashboard.getNumber("Max Acceleration", 0))
-    #     allE = cast(
-    #         float, wpilib.SmartDashboard.getNumber("Allowed Closed Loop Error", 0)
-    #     )
-    #
-    #     for motor in self.motors:
-    #         pid_controller = motor.getPIDController()
-    #         encoder = motor.getEncoder()
-    #         if p != self.kP:
-    #             pid_controller.setP(p)
-    #             self.kP = p
-    #         if i != self.kI:
-    #             pid_controller.setI(i)
-    #             self.kI = i
-    #         if d != self.kD:
-    #             pid_controller.setD(d)
-    #             self.kD = d
-    #         if iz != self.kIz:
-    #             pid_controller.setIZone(iz)
-    #             self.kIz = iz
-    #         if ff != self.kFF:
-    #             pid_controller.setFF(ff)
-    #             self.kFF = ff
-    #         if max_out != self.kMaxOutput or min_out != self.kMinOutput:
-    #             pid_controller.setOutputRange(min_out, max_out)
-    #             self.kMinOutput = min_out
-    #             self.kMaxOutput = max_out
-    #         if maxV != self.max_vel:
-    #             pid_controller.setSmartMotionMaxVelocity(maxV, 0)
-    #             self.max_vel = maxV
-    #         if minV != self.min_vel:
-    #             pid_controller.setSmartMotionMinOutputVelocity(minV, 0)
-    #             self.min_vel = minV
-    #         if maxA != self.max_acc:
-    #             pid_controller.setSmartMotionMaxAccel(maxA, 0)
-    #             self.max_acc = maxA
-    #         if allE != self.allowed_err:
-    #             pid_controller.setSmartMotionAllowedClosedLoopError(allE, 0)
-    #             self.allowed_err = allE
-    #
-    #         mode = wpilib.SmartDashboard.getBoolean("Mode", False)
-    #         if mode:
-    #             setpoint = cast(
-    #                 float, wpilib.SmartDashboard.getNumber("Set Velocity", 0)
-    #             )
-    #             pid_controller.setReference(
-    #                 setpoint, rev.CANSparkMax.ControlType.kVelocity
-    #             )
-    #             pv = encoder.getVelocity()
-    #         else:
-    #             setpoint = cast(
-    #                 float, wpilib.SmartDashboard.getNumber("Set Position", 0)
-    #             )
-    #             pid_controller.setReference(
-    #                 setpoint, rev.CANSparkMax.ControlType.kSmartMotion
-    #             )
-    #             pv = encoder.getPosition()
-    #
-    #         wpilib.SmartDashboard.putNumber("SetPoint", setpoint)
-    #         wpilib.SmartDashboard.putNumber("Process Variable", pv)
-    #         wpilib.SmartDashboard.putNumber("Output", motor.getAppliedOutput())
-    #
     def arcadeDrive(
         self, xSpeed: float, zRotation: float, squareInputs: bool = True
     ) -> None:
@@ -220,7 +148,19 @@ class DriveSubsystem(commands2.SubsystemBase):
         :param fwd: the commanded forward movement
         :param rot: the commanded rotation
         """
-        self.drive.arcadeDrive(xSpeed, zRotation)
+        self.motors[0].pid_controller.setReference(
+            xSpeed * 1000, CANSparkMax.ControlType.kSmartMotion
+        )
+        self.motors[1].pid_controller.setReference(
+            xSpeed * 1000, CANSparkMax.ControlType.kSmartMotion
+        )
+        self.motors[2].pid_controller.setReference(
+            xSpeed * 1000, CANSparkMax.ControlType.kSmartMotion
+        )
+        self.motors[3].pid_controller.setReference(
+            xSpeed * 1000, CANSparkMax.ControlType.kSmartMotion
+        )
+        # self.drive.arcadeDrive(xSpeed, zRotation)
 
     def stopMotor(self):
         self.drive.stopMotor()
