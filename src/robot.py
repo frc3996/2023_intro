@@ -3,6 +3,7 @@
 import magicbot
 import navx
 import wpilib
+import constants
 import wpilib.drive
 from ntcore import NetworkTableInstance
 
@@ -16,24 +17,25 @@ class MyRobot(magicbot.MagicRobot):
     #
     # Define components here
     #
-
-    dummy: Dummy
+    # drive: DriveSubsystem
+    # dummy: Dummy
     # pmu: PneumaticControlModule
 
     # You can even pass constants to components
-    SOME_CONSTANT = 1
+    # SOME_CONSTANT = 1
 
     def createObjects(self):
         """Initialize all wpilib motors & sensors"""
 
+        self.drive = DriveSubsystem()
+        self.dummy = Dummy()
         # self.gyro = navx.AHRS.create_spi()
 
         self.joystick = wpilib.XboxController(0)
         self.keyboard = Keyboard(1)
 
-        self.drive = DriveSubsystem()
-
-        # self.compressor = wpilib.Compressor(wpilib.PneumaticsModuleType.CTREPCM)
+        self.compressor = wpilib.Compressor(constants.pcm_can_id, wpilib.PneumaticsModuleType.CTREPCM)
+        self.pcm = wpilib.Solenoid(constants.pcm_can_id, wpilib.PneumaticsModuleType.CTREPCM, 0)
 
     #
     # No autonomous routine boilerplate required here, anything in the
@@ -45,6 +47,17 @@ class MyRobot(magicbot.MagicRobot):
         actions"""
 
         with self.consumeExceptions():
+
+            if self.joystick.getXButton():
+                self.pcm.set(1)
+            else:
+                self.pcm.set(0)
+                
+
+            if self.joystick.getYButton():
+                self.compressor.enableDigital()
+            else:
+                self.compressor.disable()
             # We do this so we don't crash in teleop
 
             # Lets try to handle both the XboxController and Keyboard

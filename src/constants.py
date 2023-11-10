@@ -90,3 +90,7 @@ kGearingRatio = 8
 kWheelRadius = 0.0508
 
 # kEncoderResolution = -
+
+
+# PCM
+pcm_can_id = 30

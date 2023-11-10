@@ -82,9 +82,9 @@ class DriveSubsystem(commands2.SubsystemBase):
             self.right_motor_2.follow(
                 self.right_motor_1, constants.kRightMotor2Inverted
             )
-            # self.drive = wpilib.drive.DifferentialDrive(
-            #     self.left_motor_1, self.right_motor_1
-            # )
+            self.drive = wpilib.drive.DifferentialDrive(
+                self.left_motor_1, self.right_motor_1
+            )
         else:
             left_group = wpilib.MotorControllerGroup(
                 self.left_motor_1, self.left_motor_2
@@ -92,7 +92,7 @@ class DriveSubsystem(commands2.SubsystemBase):
             right_group = wpilib.MotorControllerGroup(
                 self.right_motor_1, self.right_motor_2
             )
-            # self.drive = wpilib.drive.DifferentialDrive(left_group, right_group)
+            self.drive = wpilib.drive.DifferentialDrive(left_group, right_group)
 
         # Easier in a list
 
@@ -148,19 +148,19 @@ class DriveSubsystem(commands2.SubsystemBase):
         :param fwd: the commanded forward movement
         :param rot: the commanded rotation
         """
-        self.motors[0].pid_controller.setReference(
-            xSpeed * 1000, CANSparkMax.ControlType.kSmartMotion
-        )
-        self.motors[1].pid_controller.setReference(
-            xSpeed * 1000, CANSparkMax.ControlType.kSmartMotion
-        )
-        self.motors[2].pid_controller.setReference(
-            xSpeed * 1000, CANSparkMax.ControlType.kSmartMotion
-        )
-        self.motors[3].pid_controller.setReference(
-            xSpeed * 1000, CANSparkMax.ControlType.kSmartMotion
-        )
-        # self.drive.arcadeDrive(xSpeed, zRotation)
+        # self.motors[0].pid_controller.setReference(
+        #     xSpeed * 1000, CANSparkMax.ControlType.kSmartMotion
+        # )
+        # self.motors[1].pid_controller.setReference(
+        #     xSpeed * 1000, CANSparkMax.ControlType.kSmartMotion
+        # )
+        # self.motors[2].pid_controller.setReference(
+        #     xSpeed * 1000, CANSparkMax.ControlType.kSmartMotion
+        # )
+        # self.motors[3].pid_controller.setReference(
+        #     xSpeed * 1000, CANSparkMax.ControlType.kSmartMotion
+        # )
+        self.drive.arcadeDrive(xSpeed, zRotation)
 
     def stopMotor(self):
         self.drive.stopMotor()

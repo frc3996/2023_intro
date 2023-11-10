@@ -46,14 +46,9 @@
         "Robot": {
           "style": "Box/Image"
         },
-        "image": "2022-field.png",
+        "image": "C:\\Users\\UtilisateurRikitik\\Documents\\2023_intro\\2022-field.png",
         "window": {
           "name": "Field",
-          "visible": true
-        }
-      },
-      "/SmartDashboard/Model": {
-        "window": {
           "visible": true
         }
       }
@@ -99,5 +94,8 @@
       },
       "open": true
     }
+  },
+  "NetworkTables View": {
+    "visible": false
   }
 }

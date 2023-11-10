@@ -1,10 +1,11 @@
 import logging
-
+from subsystems.drivetrain import DriveSubsystem 
 from magicbot import will_reset_to
 
 
 class Dummy:
     logger: logging.Logger
+    drive: DriveSubsystem
     # This is changed to the value in robot.py
     SOME_CONSTANT: int
 
